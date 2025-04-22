@@ -1,18 +1,25 @@
 
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Layout } from "@/components/layout/Layout";
 import { DisasterCard } from "@/components/disasters/DisasterCard";
 import { mockDisasters } from "@/data/mockData";
+import { User } from "@/types";
 
-const HomePage: React.FC = () => {
+interface HomePageProps {
+  currentUser: User;
+  onLogout: () => void;
+}
+
+const HomePage: React.FC<HomePageProps> = ({ currentUser, onLogout }) => {
+  const navigate = useNavigate();
   // Get recent disasters for the showcase
   const recentDisasters = mockDisasters.slice(0, 3);
 
   return (
-    <Layout>
+    <Layout currentUser={currentUser} onLogout={onLogout}>
       <section className="flex flex-col-reverse md:flex-row items-center gap-6 pb-8 pt-6 md:py-10">
         <div className="flex-1 space-y-4">
           <h1 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
@@ -27,17 +34,13 @@ const HomePage: React.FC = () => {
             emergency responders for faster and more effective relief.
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
-            <Link to="/report">
-              <Button className="bg-alert hover:bg-alert/90 w-full sm:w-auto">
-                <AlertTriangle className="mr-2 h-4 w-4" />
-                Report Emergency
-              </Button>
-            </Link>
-            <Link to="/disasters">
-              <Button variant="outline" className="w-full sm:w-auto">
-                View Active Emergencies
-              </Button>
-            </Link>
+            <Button className="bg-alert hover:bg-alert/90 w-full sm:w-auto" onClick={() => navigate('/report')}>
+              <AlertTriangle className="mr-2 h-4 w-4" />
+              Report Emergency
+            </Button>
+            <Button variant="outline" className="w-full sm:w-auto" onClick={() => navigate('/all-disasters')}>
+              View Active Emergencies
+            </Button>
           </div>
         </div>
         <div className="flex-1 flex justify-center">
@@ -95,9 +98,9 @@ const HomePage: React.FC = () => {
       <section className="py-8 border-t">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold">Recent Emergencies</h2>
-          <Link to="/disasters">
-            <Button variant="link">View All</Button>
-          </Link>
+          <Button variant="link" onClick={() => navigate('/all-disasters')}>
+            View All
+          </Button>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {recentDisasters.map((disaster) => (

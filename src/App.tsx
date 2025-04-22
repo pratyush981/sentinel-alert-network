@@ -15,6 +15,7 @@ import AdminDisasterDetail from "./pages/admin/AdminDisasterDetail";
 import NotFound from "./pages/NotFound";
 import ProfilePage from "./pages/ProfilePage";
 import LoginPage from "./pages/LoginPage";
+import DisastersPage from "./pages/DisastersPage";
 import { User } from "@/types";
 
 const queryClient = new QueryClient();
@@ -48,48 +49,80 @@ function AppInner() {
             } 
           />
           {/* User Portal */}
-          <Route path="/disasters" element={
-            currentUser && currentUser.role === "user" ? 
-              <HomePage currentUser={currentUser} onLogout={handleLogout} /> : 
-              <Navigate to="/" replace />
-          } />
-          <Route path="/report" element={
-            currentUser && currentUser.role === "user" ? 
-              <ReportPage currentUser={currentUser} onLogout={handleLogout} /> : 
-              <Navigate to="/" replace />
-          } />
-          <Route path="/disasters/:id" element={
-            currentUser && currentUser.role === "user" ? 
-              <DisasterDetailPage currentUser={currentUser} onLogout={handleLogout} /> : 
-              <Navigate to="/" replace />
-          } />
-          <Route path="/profile" element={
-            currentUser && currentUser.role === "user" ? 
-              <ProfilePage currentUser={currentUser} onLogout={handleLogout} /> : 
-              <Navigate to="/" replace />
-          } />
+          <Route 
+            path="/disasters" 
+            element={
+              currentUser && currentUser.role === "user" ? 
+                <HomePage currentUser={currentUser} onLogout={handleLogout} /> : 
+                <Navigate to="/" replace />
+            } 
+          />
+          <Route 
+            path="/all-disasters"  
+            element={
+              currentUser && currentUser.role === "user" ? 
+                <DisastersPage currentUser={currentUser} onLogout={handleLogout} /> : 
+                <Navigate to="/" replace />
+            } 
+          />
+          <Route 
+            path="/report" 
+            element={
+              currentUser && currentUser.role === "user" ? 
+                <ReportPage currentUser={currentUser} onLogout={handleLogout} /> : 
+                <Navigate to="/" replace />
+            } 
+          />
+          <Route 
+            path="/disasters/:id" 
+            element={
+              currentUser && currentUser.role === "user" ? 
+                <DisasterDetailPage currentUser={currentUser} onLogout={handleLogout} /> : 
+                <Navigate to="/" replace />
+            } 
+          />
+          <Route 
+            path="/profile" 
+            element={
+              currentUser && currentUser.role === "user" ? 
+                <ProfilePage currentUser={currentUser} onLogout={handleLogout} /> : 
+                <Navigate to="/" replace />
+            } 
+          />
 
           {/* Admin Portal */}
-          <Route path="/admin" element={
-            currentUser && currentUser.role === "admin" ? 
-              <AdminDashboard currentUser={currentUser} onLogout={handleLogout} /> : 
-              <Navigate to="/" replace />
-          } />
-          <Route path="/admin/actions" element={
-            currentUser && currentUser.role === "admin" ? 
-              <AdminActions currentUser={currentUser} onLogout={handleLogout} /> : 
-              <Navigate to="/" replace />
-          } />
-          <Route path="/admin/profile" element={
-            currentUser && currentUser.role === "admin" ? 
-              <AdminProfile currentUser={currentUser} onLogout={handleLogout} /> : 
-              <Navigate to="/" replace />
-          } />
-          <Route path="/admin/disasters/:id" element={
-            currentUser && currentUser.role === "admin" ? 
-              <AdminDisasterDetail currentUser={currentUser} onLogout={handleLogout} /> : 
-              <Navigate to="/" replace />
-          } />
+          <Route 
+            path="/admin" 
+            element={
+              currentUser && currentUser.role === "admin" ? 
+                <AdminDashboard currentUser={currentUser} onLogout={handleLogout} /> : 
+                <Navigate to="/" replace />
+            } 
+          />
+          <Route 
+            path="/admin/actions" 
+            element={
+              currentUser && currentUser.role === "admin" ? 
+                <AdminActions currentUser={currentUser} onLogout={handleLogout} /> : 
+                <Navigate to="/" replace />
+            } 
+          />
+          <Route 
+            path="/admin/profile" 
+            element={
+              currentUser && currentUser.role === "admin" ? 
+                <AdminProfile currentUser={currentUser} onLogout={handleLogout} /> : 
+                <Navigate to="/" replace />
+            } 
+          />
+          <Route 
+            path="/admin/disasters/:id" 
+            element={
+              currentUser && currentUser.role === "admin" ? 
+                <AdminDisasterDetail currentUser={currentUser} onLogout={handleLogout} /> : 
+                <Navigate to="/" replace />
+            } 
+          />
           
           <Route path="*" element={<NotFound />} />
         </Routes>

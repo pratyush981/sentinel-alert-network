@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Layout } from "@/components/layout/Layout";
 import { DisasterCard } from "@/components/disasters/DisasterCard";
 import { mockDisasters } from "@/data/mockData";
-import { DisasterReport, DisasterType, SeverityLevel } from "@/types";
+import { DisasterReport, DisasterType, SeverityLevel, User } from "@/types";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search } from "lucide-react";
@@ -15,7 +15,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const DisastersPage: React.FC = () => {
+interface DisastersPageProps {
+  currentUser: User;
+  onLogout: () => void;
+}
+
+const DisastersPage: React.FC<DisastersPageProps> = ({ currentUser, onLogout }) => {
   const [disasters, setDisasters] = useState<DisasterReport[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [typeFilter, setTypeFilter] = useState<DisasterType | "all">("all");
@@ -53,7 +58,7 @@ const DisastersPage: React.FC = () => {
   };
 
   return (
-    <Layout>
+    <Layout currentUser={currentUser} onLogout={onLogout}>
       <div className="mb-6">
         <h1 className="text-3xl font-bold mb-2">Active Emergencies</h1>
         <p className="text-muted-foreground">
