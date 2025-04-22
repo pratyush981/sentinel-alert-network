@@ -15,12 +15,15 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { DisasterReport, DisasterType, SeverityLevel } from "@/types";
-import { disasterTypes, addDisaster } from "@/data/mockData";
+import { disasterTypes } from "@/data/mockData";
+import { useDisasters } from "@/context/DisasterContext";
+import DisasterMap from "@/components/map/DisasterMap";
 
 export const DisasterForm: React.FC = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  
+  const { addDisaster } = useDisasters();
+
   const [formData, setFormData] = useState({
     title: "",
     type: "" as DisasterType,
@@ -32,22 +35,23 @@ export const DisasterForm: React.FC = () => {
     reporterContact: "",
     reporterEmail: "",
     reporterOrganization: "",
+    coordinates: undefined as { lat: number; lng: number } | undefined
   });
-  
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
-  
+
   const handleSelectChange = (name: string, value: string) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
-  
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!formData.title || !formData.type || !formData.description || !formData.location || !formData.severity || !formData.reporterName || !formData.reporterContact || !formData.reporterEmail) {
       toast({
         title: "Missing Information",
@@ -56,7 +60,7 @@ export const DisasterForm: React.FC = () => {
       });
       return;
     }
-    
+
     // Format the data to match our DisasterReport type
     const newDisaster: Omit<DisasterReport, "id" | "reportedAt" | "updatedAt" | "status"> = {
       title: formData.title,
@@ -71,20 +75,21 @@ export const DisasterForm: React.FC = () => {
         email: formData.reporterEmail,
         organization: formData.reporterOrganization || undefined,
       },
+      coordinates: formData.coordinates
     };
-    
-    // Add the disaster to our mock data
+
+    // Add the disaster to our global context
     const addedDisaster = addDisaster(newDisaster);
-    
+
     toast({
       title: "Disaster Report Submitted",
       description: "Your report has been successfully submitted.",
     });
-    
+
     // Navigate to the detail page
     navigate(`/disasters/${addedDisaster.id}`);
   };
-  
+
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="space-y-4">
@@ -189,6 +194,17 @@ export const DisasterForm: React.FC = () => {
             onChange={handleChange}
             placeholder="Description of the affected area (e.g., 5-mile radius around downtown)"
           />
+        </div>
+        <div className="space-y-2">
+          <Label className="text-base">Location on Map (optional but recommended!)</Label>
+          <DisasterMap
+            coordinates={formData.coordinates}
+            onSelect={(coords) => setFormData((prev) => ({ ...prev, coordinates: coords }))}
+            height="220px"
+          />
+          <div className="text-xs text-muted-foreground">
+            Drag/select the point where the disaster occured to help responders.
+          </div>
         </div>
       </div>
       

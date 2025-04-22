@@ -1,8 +1,7 @@
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Layout } from "@/components/layout/Layout";
 import { DisasterCard } from "@/components/disasters/DisasterCard";
-import { mockDisasters } from "@/data/mockData";
 import { DisasterReport, DisasterType, SeverityLevel, User } from "@/types";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -14,6 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useDisasters } from "@/context/DisasterContext";
 
 interface DisastersPageProps {
   currentUser: User;
@@ -21,15 +21,10 @@ interface DisastersPageProps {
 }
 
 const DisastersPage: React.FC<DisastersPageProps> = ({ currentUser, onLogout }) => {
-  const [disasters, setDisasters] = useState<DisasterReport[]>([]);
+  const { disasters } = useDisasters();
   const [searchTerm, setSearchTerm] = useState("");
   const [typeFilter, setTypeFilter] = useState<DisasterType | "all">("all");
   const [severityFilter, setSeverityFilter] = useState<SeverityLevel | "all">("all");
-
-  // Load disasters on component mount
-  useEffect(() => {
-    setDisasters([...mockDisasters]); // Always get latest
-  }, []);
 
   // Apply filters to disasters
   const filteredDisasters = disasters.filter((disaster) => {
@@ -59,11 +54,14 @@ const DisastersPage: React.FC<DisastersPageProps> = ({ currentUser, onLogout }) 
 
   return (
     <Layout currentUser={currentUser} onLogout={onLogout}>
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold mb-2">Active Emergencies</h1>
-        <p className="text-muted-foreground">
-          Track and monitor emergency situations across the network
-        </p>
+      <div className="mb-6 flex justify-between items-center">
+        <div>
+          <h1 className="text-3xl font-bold mb-2">Active Emergencies</h1>
+          <p className="text-muted-foreground">
+            Track and monitor emergency situations across the network
+          </p>
+        </div>
+        <Button onClick={onLogout} variant="destructive" className="ml-4">Logout</Button>
       </div>
 
       <div className="mb-6 p-4 border rounded-lg bg-card">
