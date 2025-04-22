@@ -9,7 +9,7 @@ interface ProfilePageProps {
   onLogout: () => void;
 }
 
-const ProfilePage: React.FC<ProfilePageProps> = ({ currentUser }) => {
+const ProfilePage: React.FC<ProfilePageProps> = ({ currentUser, onLogout }) => {
   if (!currentUser) {
     return (
       <Layout>
@@ -22,7 +22,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ currentUser }) => {
   }
 
   return (
-    <Layout currentUser={currentUser}>
+    <Layout currentUser={currentUser} onLogout={onLogout}>
       <div className="max-w-2xl mx-auto">
         <h1 className="text-3xl font-bold mb-6">User Profile</h1>
         <Card>

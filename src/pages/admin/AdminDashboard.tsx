@@ -1,23 +1,36 @@
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { AdminLayout } from "@/components/layout/Layout";
 import { DisasterTable } from "@/components/admin/DisasterTable";
 import { mockDisasters } from "@/data/mockData";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { AlertTriangle } from "lucide-react";
+import { User } from "@/types";
 
-const AdminDashboard: React.FC = () => {
+interface AdminDashboardProps {
+  currentUser: User;
+  onLogout: () => void;
+}
+
+const AdminDashboard: React.FC<AdminDashboardProps> = ({ currentUser, onLogout }) => {
+  const [disasters, setDisasters] = useState([...mockDisasters]);
+  
+  // Refresh disasters data whenever the component mounts
+  useEffect(() => {
+    setDisasters([...mockDisasters]); // Get fresh data from mockData
+  }, []);
+
   // Calculate some statistics for the dashboard
-  const totalDisasters = mockDisasters.length;
-  const activeDisasters = mockDisasters.filter(
+  const totalDisasters = disasters.length;
+  const activeDisasters = disasters.filter(
     (d) => d.status !== "resolved" && d.status !== "closed"
   ).length;
-  const criticalDisasters = mockDisasters.filter(
+  const criticalDisasters = disasters.filter(
     (d) => d.severity === "critical"
   ).length;
   
   return (
-    <AdminLayout>
+    <AdminLayout currentUser={currentUser} onLogout={onLogout}>
       <div className="mb-6">
         <h1 className="text-3xl font-bold mb-2">Admin Dashboard</h1>
         <p className="text-muted-foreground">
@@ -77,7 +90,7 @@ const AdminDashboard: React.FC = () => {
       
       <div className="border rounded-lg p-6 bg-card">
         <h2 className="text-xl font-bold mb-6">All Emergency Reports</h2>
-        <DisasterTable disasters={mockDisasters} />
+        <DisasterTable disasters={disasters} />
       </div>
     </AdminLayout>
   );
