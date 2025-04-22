@@ -2,6 +2,8 @@
 import React from "react";
 import { Layout } from "@/components/layout/Layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { User, LogOut } from "lucide-react";
 import { User as UserType } from "@/types";
 
 interface ProfilePageProps {
@@ -24,12 +26,30 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ currentUser, onLogout }) => {
   return (
     <Layout currentUser={currentUser} onLogout={onLogout}>
       <div className="max-w-2xl mx-auto">
-        <h1 className="text-3xl font-bold mb-6">User Profile</h1>
-        <Card>
-          <CardHeader>
-            <CardTitle>Personal Information</CardTitle>
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-3xl font-bold">User Profile</h1>
+          <Button 
+            variant="destructive" 
+            onClick={onLogout}
+            className="flex items-center gap-2"
+          >
+            <LogOut className="h-4 w-4" />
+            Logout
+          </Button>
+        </div>
+        <Card className="shadow-md">
+          <CardHeader className="bg-gradient-to-r from-green-50 to-blue-50">
+            <div className="flex items-center gap-4">
+              <div className="bg-primary/10 p-3 rounded-full">
+                <User className="h-10 w-10 text-primary" />
+              </div>
+              <div>
+                <CardTitle className="text-xl">{currentUser.name}</CardTitle>
+                <p className="text-muted-foreground text-sm">{currentUser.email}</p>
+              </div>
+            </div>
           </CardHeader>
-          <CardContent>
+          <CardContent className="pt-6">
             <div className="grid gap-4">
               <div className="grid grid-cols-4 items-center gap-4">
                 <div className="font-medium">Name</div>
