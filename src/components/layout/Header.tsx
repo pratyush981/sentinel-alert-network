@@ -1,18 +1,20 @@
 
 import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { AlertTriangle, Menu } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { User, LogOut, Menu } from "lucide-react";
 import { MobileNav } from "./MobileNav";
 import { Button } from "@/components/ui/button";
-import { User } from "@/types";
+import { User as UserType } from "@/types";
 
 interface HeaderProps {
-  currentUser?: User | null;
+  currentUser?: UserType | null;
+  onLogout?: () => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({ currentUser }) => {
+export const Header: React.FC<HeaderProps> = ({ currentUser, onLogout }) => {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   // Hide whole header on login page
   if (location.pathname === "/") return null;
@@ -22,7 +24,7 @@ export const Header: React.FC<HeaderProps> = ({ currentUser }) => {
       <div className="container flex h-14 max-w-screen-2xl items-center">
         <div className="mr-4 flex">
           <Link to={currentUser?.role === "admin" ? "/admin" : "/disasters"} className="mr-6 flex items-center space-x-2">
-            <AlertTriangle className="h-6 w-6 text-alert" />
+            <User className="h-6 w-6 text-green-600" />
             <span className="hidden font-bold sm:inline-block">
               Disaster Relief Bharat
             </span>
@@ -30,31 +32,19 @@ export const Header: React.FC<HeaderProps> = ({ currentUser }) => {
           <nav className="hidden md:flex items-center gap-6 text-sm">
             {currentUser?.role === "admin" ? (
               <>
-                <Link
-                  to="/admin"
-                  className="transition-colors hover:text-foreground/80 text-foreground/60"
-                >
+                <Link to="/admin" className="transition-colors hover:text-foreground/80 text-foreground/60">
                   Admin Dashboard
                 </Link>
-                <Link
-                  to="/admin/actions"
-                  className="transition-colors hover:text-foreground/80 text-foreground/60"
-                >
+                <Link to="/admin/actions" className="transition-colors hover:text-foreground/80 text-foreground/60">
                   Actions
                 </Link>
               </>
             ) : (
               <>
-                <Link
-                  to="/disasters"
-                  className="transition-colors hover:text-foreground/80 text-foreground/60"
-                >
+                <Link to="/disasters" className="transition-colors hover:text-foreground/80 text-foreground/60">
                   Home
                 </Link>
-                <Link
-                  to="/report"
-                  className="transition-colors hover:text-foreground/80 text-foreground/60"
-                >
+                <Link to="/report" className="transition-colors hover:text-foreground/80 text-foreground/60">
                   Report Disaster
                 </Link>
               </>
@@ -67,11 +57,16 @@ export const Header: React.FC<HeaderProps> = ({ currentUser }) => {
           </div>
           <nav className="flex items-center gap-2">
             {currentUser ? (
-              <Link to={currentUser.role === "admin" ? "/admin/profile" : "/profile"}>
-                <Button variant="outline" size="sm">
-                  {currentUser.name}
+              <>
+                <Link to={currentUser.role === "admin" ? "/admin/profile" : "/profile"}>
+                  <Button variant="outline" size="sm" className="mr-2">
+                    {currentUser.name}
+                  </Button>
+                </Link>
+                <Button variant="ghost" size="icon" onClick={onLogout} title="Logout">
+                  <LogOut className="h-5 w-5" />
                 </Button>
-              </Link>
+              </>
             ) : (
               <Link to="/">
                 <Button variant="outline" size="sm">

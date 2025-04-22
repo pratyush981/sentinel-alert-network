@@ -2,15 +2,14 @@
 import React from "react";
 import { Layout } from "@/components/layout/Layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { mockUsers } from "@/data/mockData";
-import { User } from "@/types";
+import { User as UserType } from "@/types";
 
-const ProfilePage: React.FC = () => {
-  // For demo purposes, we'll use the first regular user
-  const currentUser: User | undefined = mockUsers.find(
-    (user) => user.role === "user"
-  );
+interface ProfilePageProps {
+  currentUser: UserType;
+  onLogout: () => void;
+}
 
+const ProfilePage: React.FC<ProfilePageProps> = ({ currentUser }) => {
   if (!currentUser) {
     return (
       <Layout>
@@ -23,10 +22,9 @@ const ProfilePage: React.FC = () => {
   }
 
   return (
-    <Layout>
+    <Layout currentUser={currentUser}>
       <div className="max-w-2xl mx-auto">
         <h1 className="text-3xl font-bold mb-6">User Profile</h1>
-        
         <Card>
           <CardHeader>
             <CardTitle>Personal Information</CardTitle>
@@ -48,6 +46,14 @@ const ProfilePage: React.FC = () => {
               <div className="grid grid-cols-4 items-center gap-4">
                 <div className="font-medium">Location</div>
                 <div className="col-span-3">New Delhi, India</div>
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <div className="font-medium">Contact</div>
+                <div className="col-span-3">{currentUser.contact || "N/A"}</div>
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <div className="font-medium">Organization</div>
+                <div className="col-span-3">{currentUser.organization || "N/A"}</div>
               </div>
             </div>
           </CardContent>
