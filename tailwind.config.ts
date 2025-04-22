@@ -52,6 +52,22 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+                alert: {
+                    DEFAULT: '#b91c1c',
+                    foreground: '#ffffff'
+                },
+                warning: {
+                    DEFAULT: '#d97706',
+                    foreground: '#ffffff'
+                },
+                success: {
+                    DEFAULT: '#22543d',
+                    foreground: '#ffffff'
+                },
+                info: {
+                    DEFAULT: '#1f2937',
+                    foreground: '#ffffff'
+                },
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
