@@ -4,6 +4,7 @@ import { Header } from "./Header";
 import { Footer } from "./Footer";
 import { User } from "@/types";
 import { mockUsers } from "@/data/mockData";
+import { useLocation } from "react-router-dom";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -22,11 +23,14 @@ export const Layout: React.FC<LayoutProps> = ({
     return true;
   });
 
+  const location = useLocation();
+
   return (
     <div className="flex min-h-screen flex-col">
-      <Header currentUser={currentUser} />
+      {/* Hide header on login page */}
+      {location.pathname !== "/" && <Header currentUser={currentUser} />}
       <main className="flex-1 container py-6 md:py-10">{children}</main>
-      <Footer />
+      {location.pathname !== "/" && <Footer />}
     </div>
   );
 };
@@ -34,3 +38,4 @@ export const Layout: React.FC<LayoutProps> = ({
 export const AdminLayout: React.FC<LayoutProps> = ({ children }) => {
   return <Layout requireAdmin={true}>{children}</Layout>;
 };
+
