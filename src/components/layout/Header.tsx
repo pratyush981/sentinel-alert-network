@@ -73,7 +73,7 @@ export const Header: React.FC<HeaderProps> = ({ currentUser }) => {
                 </Button>
               </Link>
             ) : (
-              <Link to="/login">
+              <Link to="/">
                 <Button variant="outline" size="sm">
                   Login
                 </Button>
@@ -99,4 +99,3 @@ export const Header: React.FC<HeaderProps> = ({ currentUser }) => {
     </header>
   );
 };
-
