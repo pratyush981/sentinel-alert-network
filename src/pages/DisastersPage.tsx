@@ -23,7 +23,7 @@ const DisastersPage: React.FC = () => {
 
   // Load disasters on component mount
   useEffect(() => {
-    setDisasters(mockDisasters);
+    setDisasters([...mockDisasters]); // Always get latest
   }, []);
 
   // Apply filters to disasters

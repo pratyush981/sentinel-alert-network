@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { AlertTriangle, Menu } from "lucide-react";
@@ -20,7 +19,7 @@ export const Header: React.FC<HeaderProps> = ({ currentUser }) => {
           <Link to="/" className="mr-6 flex items-center space-x-2">
             <AlertTriangle className="h-6 w-6 text-alert" />
             <span className="hidden font-bold sm:inline-block">
-              Sentinel Alert
+              Disaster Relief Bharat
             </span>
           </Link>
           <nav className="hidden md:flex items-center gap-6 text-sm">
@@ -54,7 +53,6 @@ export const Header: React.FC<HeaderProps> = ({ currentUser }) => {
             ) : null}
           </nav>
         </div>
-
         <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
           <div className="w-full flex-1 md:w-auto md:flex-none">
             {/* Search could go here if needed */}
@@ -84,8 +82,6 @@ export const Header: React.FC<HeaderProps> = ({ currentUser }) => {
           </nav>
         </div>
       </div>
-      
-      {/* Mobile Navigation */}
       {showMobileMenu && (
         <MobileNav 
           currentUser={currentUser}
